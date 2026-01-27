@@ -27,30 +27,35 @@ public sealed class AppDbContext : IdentityDbContext
             entity.Property(e => e.Phone).HasMaxLength(30);
             entity.Property(e => e.Department).IsRequired().HasMaxLength(100);
             entity.Property(e => e.JobTitle).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Salary).HasPrecision(18, 2);
         });
 
         builder.Entity<Product>(entity =>
         {
             entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
             entity.Property(e => e.SKU).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
         });
 
         builder.Entity<Income>(entity =>
         {
             entity.Property(e => e.Source).IsRequired().HasMaxLength(150);
             entity.Property(e => e.Notes).HasMaxLength(500);
+            entity.Property(e => e.Amount).HasPrecision(18, 2);
         });
 
         builder.Entity<Expense>(entity =>
         {
             entity.Property(e => e.Category).IsRequired().HasMaxLength(150);
             entity.Property(e => e.Notes).HasMaxLength(500);
+            entity.Property(e => e.Amount).HasPrecision(18, 2);
         });
 
         builder.Entity<Invoice>(entity =>
         {
             entity.Property(e => e.InvoiceNumber).IsRequired().HasMaxLength(50);
             entity.Property(e => e.CustomerName).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.Amount).HasPrecision(18, 2);
         });
     }
 }

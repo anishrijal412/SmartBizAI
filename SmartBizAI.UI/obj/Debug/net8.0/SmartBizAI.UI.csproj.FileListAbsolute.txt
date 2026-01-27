@@ -36,3 +36,4 @@ C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.UI\obj\Debug\net8.0\refint
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.UI\obj\Debug\net8.0\SmartBizAI.UI.pdb
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.UI\obj\Debug\net8.0\SmartBizAI.UI.genruntimeconfig.cache
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.UI\obj\Debug\net8.0\ref\SmartBizAI.UI.dll
+C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.UI\obj\Debug\net8.0\SmartBizAI.UI.sourcelink.json

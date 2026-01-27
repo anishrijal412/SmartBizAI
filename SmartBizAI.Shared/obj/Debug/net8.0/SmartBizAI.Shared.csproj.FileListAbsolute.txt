@@ -9,3 +9,4 @@ C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.Shared\obj\Debug\net8.0\Sm
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.Shared\obj\Debug\net8.0\refint\SmartBizAI.Shared.dll
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.Shared\obj\Debug\net8.0\SmartBizAI.Shared.pdb
 C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.Shared\obj\Debug\net8.0\ref\SmartBizAI.Shared.dll
+C:\Users\Anish Rijal\Desktop\Smart AI BIZZ\SmartBizAI.Shared\obj\Debug\net8.0\SmartBizAI.Shared.sourcelink.json
