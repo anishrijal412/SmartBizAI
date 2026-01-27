@@ -1,0 +1,80 @@
+@page "/management/products"
+@attribute [Authorize]
+@inject ApiClient Api
+
+<h1>Products</h1>
+
+@if (_items == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.SKU</td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AuthorizeView Roles="Admin,Manager" Context="authState">
+    <h3>Add Product</h3>
+    <EditForm Model="_newItem" OnValidSubmit="Create">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Name" @bind-Value="_newItem.Name" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="SKU" @bind-Value="_newItem.SKU" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputNumber class="form-control" placeholder="Unit Price" @bind-Value="_newItem.UnitPrice" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputNumber class="form-control" placeholder="Quantity" @bind-Value="_newItem.Quantity" />
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create</button>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(_message))
+    {
+        <div class="alert alert-info mt-2">@_message</div>
+    }
+</AuthorizeView>
+
+@code {
+    private List<ProductDto>? _items;
+    private ProductDto _newItem = new();
+    private string? _message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await Api.GetProductsAsync(CancellationToken.None) ?? new List<ProductDto>();
+    }
+
+    private async Task Create()
+    {
+        _message = null;
+        var created = await Api.CreateProductAsync(_newItem, CancellationToken.None);
+        _message = created ? "Product created." : "Failed to create product.";
+        _newItem = new ProductDto();
+        _items = await Api.GetProductsAsync(CancellationToken.None) ?? new List<ProductDto>();
+    }
+}

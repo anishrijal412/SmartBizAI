@@ -1,0 +1,21 @@
+@page "/"
+@inject NavigationManager Navigation
+
+<h1>Welcome to SmartBizAI</h1>
+<p>Business Management System with AI Assistant.</p>
+
+<AuthorizeView>
+    <Authorized>
+        <button class="btn btn-primary" @onclick="GoDashboard">Go to Dashboard</button>
+    </Authorized>
+    <NotAuthorized>
+        <a class="btn btn-primary" href="login">Login</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void GoDashboard()
+    {
+        Navigation.NavigateTo("dashboard");
+    }
+}

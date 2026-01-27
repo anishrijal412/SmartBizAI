@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "GAAVVFYlRhg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Anish Rijal\\Desktop\\Smart AI BIZZ\\SmartBizAI.UI\\SmartBizAI.UI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Anish Rijal\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.1.2\\microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",
+    "C:\\Users\\Anish Rijal\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.1.2\\microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
+    "C:\\Users\\Anish Rijal\\.nuget\\packages\\microsoft.identitymodel.logging\\7.1.2\\microsoft.identitymodel.logging.7.1.2.nupkg.sha512",
+    "C:\\Users\\Anish Rijal\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.1.2\\microsoft.identitymodel.tokens.7.1.2.nupkg.sha512",
+    "C:\\Users\\Anish Rijal\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.1.2\\system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

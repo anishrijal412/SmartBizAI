@@ -1,0 +1,90 @@
+@page "/dashboard"
+@attribute [Authorize]
+@inject ApiClient Api
+
+<h1>Dashboard</h1>
+
+@if (_summary == null)
+{
+    <p>Loading summary...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Income</h5>
+                    <p class="display-6">@_summary.TotalIncome.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Expenses</h5>
+                    <p class="display-6">@_summary.TotalExpenses.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Net Profit</h5>
+                    <p class="display-6">@_summary.NetProfit.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Invoices</h5>
+                    <p class="display-6">@_summary.TotalInvoices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Monthly Profit (@_year)</h3>
+    @if (_monthly == null)
+    {
+        <p>Loading report...</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Income</th>
+                    <th>Total Expenses</th>
+                    <th>Net Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in _monthly)
+                {
+                    <tr>
+                        <td>@item.Month</td>
+                        <td>@item.TotalIncome.ToString("C")</td>
+                        <td>@item.TotalExpenses.ToString("C")</td>
+                        <td>@item.NetProfit.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private SummaryReportDto? _summary;
+    private List<MonthlyReportItemDto>? _monthly;
+    private readonly int _month = DateTime.Now.Month;
+    private readonly int _year = DateTime.Now.Year;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _summary = await Api.GetSummaryAsync(_month, _year, CancellationToken.None);
+        _monthly = await Api.GetMonthlyAsync(_year, CancellationToken.None);
+    }
+}

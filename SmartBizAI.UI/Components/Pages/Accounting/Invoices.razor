@@ -1,0 +1,95 @@
+@page "/accounting/invoices"
+@attribute [Authorize]
+@inject ApiClient Api
+
+<h1>Invoices</h1>
+
+@if (_items == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Invoice #</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items)
+            {
+                <tr>
+                    <td>@item.InvoiceNumber</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.Amount.ToString("C")</td>
+                    <td>@item.Status</td>
+                    <td>@item.IssueDate.ToShortDateString()</td>
+                    <td>@item.DueDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AuthorizeView Roles="Admin,Accountant" Context="authState">
+    <h3>Add Invoice</h3>
+    <EditForm Model="_newItem" OnValidSubmit="Create">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <InputText class="form-control" placeholder="Invoice #" @bind-Value="_newItem.InvoiceNumber" />
+            </div>
+            <div class="col-md-3 mb-2">
+                <InputText class="form-control" placeholder="Customer" @bind-Value="_newItem.CustomerName" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputNumber class="form-control" placeholder="Amount" @bind-Value="_newItem.Amount" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputSelect class="form-control" @bind-Value="_newItem.Status">
+                    @foreach (var status in Enum.GetValues<InvoiceStatus>())
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputDate class="form-control" @bind-Value="_newItem.IssueDate" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputDate class="form-control" @bind-Value="_newItem.DueDate" />
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create</button>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(_message))
+    {
+        <div class="alert alert-info mt-2">@_message</div>
+    }
+</AuthorizeView>
+
+@code {
+    private List<InvoiceDto>? _items;
+    private InvoiceDto _newItem = new() { IssueDate = DateTime.Today, DueDate = DateTime.Today.AddDays(30) };
+    private string? _message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await Api.GetInvoicesAsync(CancellationToken.None) ?? new List<InvoiceDto>();
+    }
+
+    private async Task Create()
+    {
+        _message = null;
+        var created = await Api.CreateInvoiceAsync(_newItem, CancellationToken.None);
+        _message = created ? "Invoice created." : "Failed to create invoice.";
+        _newItem = new InvoiceDto { IssueDate = DateTime.Today, DueDate = DateTime.Today.AddDays(30) };
+        _items = await Api.GetInvoicesAsync(CancellationToken.None) ?? new List<InvoiceDto>();
+    }
+}

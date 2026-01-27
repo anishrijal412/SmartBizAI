@@ -1,0 +1,80 @@
+@page "/accounting/expenses"
+@attribute [Authorize]
+@inject ApiClient Api
+
+<h1>Expenses</h1>
+
+@if (_items == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items)
+            {
+                <tr>
+                    <td>@item.Date.ToShortDateString()</td>
+                    <td>@item.Category</td>
+                    <td>@item.Amount.ToString("C")</td>
+                    <td>@item.Notes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AuthorizeView Roles="Admin,Accountant" Context="authState">
+    <h3>Add Expense</h3>
+    <EditForm Model="_newItem" OnValidSubmit="Create">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <InputDate class="form-control" @bind-Value="_newItem.Date" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Category" @bind-Value="_newItem.Category" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <InputNumber class="form-control" placeholder="Amount" @bind-Value="_newItem.Amount" />
+            </div>
+            <div class="col-md-3 mb-2">
+                <InputText class="form-control" placeholder="Notes" @bind-Value="_newItem.Notes" />
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create</button>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(_message))
+    {
+        <div class="alert alert-info mt-2">@_message</div>
+    }
+</AuthorizeView>
+
+@code {
+    private List<ExpenseDto>? _items;
+    private ExpenseDto _newItem = new() { Date = DateTime.Today };
+    private string? _message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await Api.GetExpensesAsync(CancellationToken.None) ?? new List<ExpenseDto>();
+    }
+
+    private async Task Create()
+    {
+        _message = null;
+        var created = await Api.CreateExpenseAsync(_newItem, CancellationToken.None);
+        _message = created ? "Expense created." : "Failed to create expense.";
+        _newItem = new ExpenseDto { Date = DateTime.Today };
+        _items = await Api.GetExpensesAsync(CancellationToken.None) ?? new List<ExpenseDto>();
+    }
+}

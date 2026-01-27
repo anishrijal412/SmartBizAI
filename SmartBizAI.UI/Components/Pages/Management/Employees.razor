@@ -1,0 +1,88 @@
+@page "/management/employees"
+@attribute [Authorize]
+@inject ApiClient Api
+
+<h1>Employees</h1>
+
+@if (_items == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Job Title</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Department</td>
+                    <td>@item.JobTitle</td>
+                    <td>@item.Salary.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AuthorizeView Roles="Admin,Manager" Context="authState">
+    <h3>Add Employee</h3>
+    <EditForm Model="_newItem" OnValidSubmit="Create">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Full Name" @bind-Value="_newItem.FullName" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Email" @bind-Value="_newItem.Email" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Phone" @bind-Value="_newItem.Phone" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Department" @bind-Value="_newItem.Department" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputText class="form-control" placeholder="Job Title" @bind-Value="_newItem.JobTitle" />
+            </div>
+            <div class="col-md-4 mb-2">
+                <InputNumber class="form-control" placeholder="Salary" @bind-Value="_newItem.Salary" />
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create</button>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(_message))
+    {
+        <div class="alert alert-info mt-2">@_message</div>
+    }
+</AuthorizeView>
+
+@code {
+    private List<EmployeeDto>? _items;
+    private EmployeeDto _newItem = new();
+    private string? _message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await Api.GetEmployeesAsync(CancellationToken.None) ?? new List<EmployeeDto>();
+    }
+
+    private async Task Create()
+    {
+        _message = null;
+        var created = await Api.CreateEmployeeAsync(_newItem, CancellationToken.None);
+        _message = created ? "Employee created." : "Failed to create employee.";
+        _newItem = new EmployeeDto();
+        _items = await Api.GetEmployeesAsync(CancellationToken.None) ?? new List<EmployeeDto>();
+    }
+}
