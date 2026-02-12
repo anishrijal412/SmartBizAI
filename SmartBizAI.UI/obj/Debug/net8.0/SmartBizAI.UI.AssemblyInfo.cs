@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartBizAI.UI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea6c90dddeec5c5e34a5e33913f006c7330875f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f736182206c1ec60d59d934d42c528c1869d5ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartBizAI.UI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartBizAI.UI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
