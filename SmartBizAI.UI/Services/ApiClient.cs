@@ -3,7 +3,11 @@ using SmartBizAI.Shared.DTOs;
 using SmartBizAI.Shared.DTOs.Ai;
 using SmartBizAI.Shared.DTOs.Auth;
 using SmartBizAI.Shared.DTOs.Reports;
-
+using SmartBizAI.Shared.DTOs.Expenses;
+using SmartBizAI.Shared.DTOs.Incomes;
+using SmartBizAI.Shared.DTOs.Invoices;
+using SmartBizAI.Shared.DTOs.Products;
+using SmartBizAI.Shared.DTOs.Employees;
 namespace SmartBizAI.UI.Services;
 
 public sealed class ApiClient
