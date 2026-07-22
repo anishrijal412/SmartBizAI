@@ -48,8 +48,7 @@ public sealed class ApiClient
     public Task<List<InvoiceDto>?> GetInvoicesAsync(CancellationToken ct)
         => _http.GetFromJsonAsync<List<InvoiceDto>>("api/invoices", ct);
 
-    public Task<List<InvoiceDto>?> GetInvoicesAsync(CancellationToken ct)
-        => _http.GetFromJsonAsync<List<InvoiceDto>>("api/invoices", ct);    
+        
 
 
     public async Task<bool> CreateEmployeeAsync(EmployeeDto dto, CancellationToken ct)
